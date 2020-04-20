@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace B20_Ex01_2
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            Console.WriteLine("Hello, Please enter an odd number of '*' to the hourglass.");
+            int validNum = checkInput();
+            buildHourglass(validNum, 0);
+        }
+
+        public static void buildHourglass(int input,int numOfSpaces)
+        {
+            if (input == 1)
+            {
+                printCharXTimes(numOfSpaces, ' ');
+                Console.WriteLine("*");
+            }
+            else
+            {
+                printCharXTimes(numOfSpaces, ' ');
+                printCharXTimes(input, '*');
+                buildHourglass(input - 2, numOfSpaces + 1);
+                printCharXTimes(numOfSpaces, ' ');
+                printCharXTimes(input, '*');
+            }
+        }
+
+       private static void printCharXTimes(int numOfPrints, char charToPrint)
+        {
+            for (int i = 0; i < numOfPrints; i++)
+            {
+                Console.Write(charToPrint);
+            }
+            if (charToPrint == '*')
+            {
+                Console.Write("{0}", Environment.NewLine);
+            }
+        }
+
+        private static int checkInput()
+        {
+            int resFromTryParse;
+            string i_Input = Console.ReadLine();
+            while (!int.TryParse(i_Input, out resFromTryParse))
+            {
+                Console.WriteLine(@"Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
+                i_Input = Console.ReadLine();
+            }
+
+            if (resFromTryParse % 2 == 1 && resFromTryParse > 0)
+            {
+                return resFromTryParse;
+            }
+
+            Console.WriteLine(@"Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
+            return checkInput();
+
+        }
+    }
+}

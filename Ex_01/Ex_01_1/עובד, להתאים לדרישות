@@ -16,10 +16,10 @@ namespace B20_Ex01_1
             num3 = checkInputFromUser();
 
             avgOfZerosAndOnesInTheInput(num1, num2, num3);
-            isPowerOfTwo(num1, num2, num3);
-
+            Console.WriteLine("There are {0} numbers that are power of two.", isPowerOfTwo(num1, num2, num3));
             Console.WriteLine("There are {0} numbers with ascending series within their digits.", numOfAscendingSeries(num1, num2, num3));
-            Console.WriteLine("There biggest number is : {0}", checkBiggest(num1, num2, num3));
+            Console.WriteLine("There biggest number is : {0}.", checkBiggest(num1, num2, num3));
+            Console.WriteLine("There smallest number is : {0}.", checkSmallest(num1, num2, num3));
 
         }
 
@@ -77,7 +77,7 @@ namespace B20_Ex01_1
             avgNumOfZeros = (double)counterZeros / 3;
             avgNumOfOnes = (double)counterOnes / 3;
 
-            Console.WriteLine("The average number of zeros is: {0} and the average number of ones is: {1}", avgNumOfZeros, avgNumOfOnes);
+            Console.WriteLine("The average number of zeros is: {0} and the average number of ones is: {1}.", avgNumOfZeros, avgNumOfOnes);
 
         }
 
@@ -96,7 +96,7 @@ namespace B20_Ex01_1
             return counterForZerosInTheNum;
         }
 
-        public static void isPowerOfTwo(int num1, int num2, int num3)
+        public static int isPowerOfTwo(int num1, int num2, int num3)
         {
             int counterOfZeros;
             int counterPowOfTwo = 0;
@@ -113,7 +113,8 @@ namespace B20_Ex01_1
             if (counterOfZeros == 8)
                 counterPowOfTwo++;
 
-            Console.WriteLine("There are {0} numbers that are power of two", counterPowOfTwo);
+            return counterPowOfTwo;
+
         }
 
         public static int numOfAscendingSeries(int i_num1,int i_num2,int i_num3)
@@ -184,6 +185,16 @@ namespace B20_Ex01_1
             int decNum3 = getDecimal(i_num3);
 
             return Math.Max(Math.Max(decNum1, decNum2), decNum3);
+        }
+
+        public static int checkSmallest(int i_num1, int i_num2, int i_num3)
+        {
+
+            int decNum1 = getDecimal(i_num1);
+            int decNum2 = getDecimal(i_num2);
+            int decNum3 = getDecimal(i_num3);
+
+            return Math.Min(Math.Min(decNum1, decNum2), decNum3);
         }
     }
 }

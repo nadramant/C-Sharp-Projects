@@ -1,0 +1,78 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace B20_Ex01_4
+{
+    class Program
+    {
+        public static void Main()
+        {
+            stringAnalysis();
+        }
+
+        private static void stringAnalysis()
+        {
+            Console.WriteLine("Hello, please enter a string with 8 characters.{0}The string will conist only numbers or only English letters.", Environment.NewLine);
+            string userInput = checkInputFromUser();
+            bool isPalindrom = checkPalindrom(userInput);
+
+        }
+        
+        private static string checkInputFromUser()
+        {
+            string retString;
+            string i_Input = Console.ReadLine();
+            
+            if (i_Input.Length != 8 || (!isNum(i_Input) && !isOnlyLetters(i_Input)))
+            {
+                Console.WriteLine("Invalid Input.{0}please enter a string with 8 characters.{1}The string will conist only numbers or only English letters.", Environment.NewLine, Environment.NewLine);
+                retString = checkInputFromUser();
+            }
+            retString = i_Input;
+            return retString;
+        }
+
+        private static bool isNum(string i_Input)
+        {
+            bool isString = false;
+            int resFromTryParse;
+
+            if (int.TryParse(i_Input, out resFromTryParse))
+            {
+                isString = true;
+            }
+            return isString;
+        }
+
+        private static bool isOnlyLetters(string i_Input)
+        {
+            bool isConsistsOnlyLetters = true;
+
+            foreach (var value in i_Input)
+            {
+                if (!Char.IsLetter(value))
+                {
+                    isConsistsOnlyLetters = false;
+                }
+            }
+            return isConsistsOnlyLetters;
+        }
+
+        private static bool checkPalindrom(string userInput)
+        {
+            bool isPalindrom = true;
+            if (userInput.Length != 0)
+            {
+                char firstChar = char.Parse(userInput.Remove(0, 1));
+                char lastChar = char.Parse(userInput.Remove(userInput.Length - 1, 1));
+                isPalindrom = checkPalindrom((userInput.Remove(userInput.Length - 1, 1)).Remove(0,1));
+                if (firstChar != lastChar)
+                {
+                    isPalindrom = false;
+                }
+            }
+            return isPalindrom; 
+        }
+    }
+}

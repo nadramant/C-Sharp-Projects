@@ -1,0 +1,211 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace B20_Ex01_1
+{
+    class Program
+    {
+        protected const int k_InputLength = 9;
+        protected const int k_NumberOfInputs = 3;
+        public static void Main()
+        {
+            binarySeries();
+        }
+
+        private static void binarySeries()
+        {
+            int num1, num2, num3;
+
+            Console.WriteLine("Hello, Please enter 3 positive integer numbers, in binary representation, with 9 digits each one.");
+            num1 = checkInputFromUser();
+            num2 = checkInputFromUser();
+            num3 = checkInputFromUser();
+
+            double numOfZeroes = numOfZeroesInAllNums(num1, num2, num3);
+            double numOfOnes = (k_InputLength * k_NumberOfInputs) - numOfZeroes;
+            Console.WriteLine("The average number of zeros is: {0} and the average number of ones is: {1}.", numOfZeroes / 3, numOfOnes / 3);
+            Console.WriteLine("There are {0} numbers that are power of two.", isPowerOfTwo(num1, num2, num3));
+            Console.WriteLine("There are {0} numbers with ascending series within their digits.", numOfAscendingSeries(num1, num2, num3));
+            Console.WriteLine("There biggest number is : {0}.", checkBiggest(num1, num2, num3));
+            Console.WriteLine("There smallest number is : {0}.", checkSmallest(num1, num2, num3));
+        }
+
+        private static int checkInputFromUser()
+        {
+            int resFromTryParse;
+            string i_Input = Console.ReadLine();
+            i_Input = i_Input.Trim();
+
+            while (!int.TryParse(i_Input, out resFromTryParse))
+            {
+                Console.WriteLine(@"Invalid input.{0}Please enter 3 positive integer numbers with 9 digits each one.", Environment.NewLine);
+                i_Input = Console.ReadLine();
+            }
+
+            bool isOk = false;
+            if (i_Input.Length == k_InputLength && resFromTryParse > 0)
+            {
+                if (isBinary(i_Input))
+                {
+                    isOk = true;
+                }
+            }
+
+            if (!isOk)
+            {
+                Console.WriteLine(@"Invalid input.{0}Please enter 3 positive integer numbers with 9 digits each one.", Environment.NewLine);
+                resFromTryParse = checkInputFromUser();
+            }
+
+            return resFromTryParse;
+
+        }
+
+
+        private static bool isBinary(string i_str)
+        {
+            char[] temp = i_str.ToCharArray();
+            for (int i = 0; i < k_InputLength; i++)
+            {
+                if (!(temp[i].Equals('0') || temp[i].Equals('1')))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private static double numOfZeroesInAllNums(int i_num1, int i_num2, int i_num3)
+        {
+            int counterZeros = 0, tempCounterZeros = 0;
+            counterZeros = countOfZerosInTheNumber(i_num1);
+
+            tempCounterZeros = countOfZerosInTheNumber(i_num2);
+            counterZeros += tempCounterZeros;
+
+            tempCounterZeros = countOfZerosInTheNumber(i_num3);
+            counterZeros += tempCounterZeros;
+
+            return (double)counterZeros;
+
+
+        }
+
+
+        private static int countOfZerosInTheNumber(int i_num)
+        {
+            int counterForZerosInTheNum = 0;
+            int temp = i_num;
+            while (i_num != 0)
+            {
+                temp = i_num % 10;
+                if (temp == 0)
+                    counterForZerosInTheNum++;
+                i_num /= 10;
+            }
+            return counterForZerosInTheNum;
+        }
+
+        private static int isPowerOfTwo(int i_num1, int i_num2, int i_num3)
+        {
+            int counterOfZeros;
+            int counterPowOfTwo = 0;
+
+            counterOfZeros = countOfZerosInTheNumber(i_num1);
+            if (counterOfZeros == 8)
+                counterPowOfTwo++;
+
+            counterOfZeros = countOfZerosInTheNumber(i_num2);
+            if (counterOfZeros == 8)
+                counterPowOfTwo++;
+
+            counterOfZeros = countOfZerosInTheNumber(i_num3);
+            if (counterOfZeros == 8)
+                counterPowOfTwo++;
+
+            return counterPowOfTwo;
+
+        }
+
+        private static int numOfAscendingSeries(int i_num1, int i_num2, int i_num3)
+        {
+            int ascendingSeriesCounter = 0;
+
+            int decNum1 = getDecimal(i_num1);
+            if (isAscendingSerie(decNum1))
+            {
+                ascendingSeriesCounter++;
+            }
+            int decNum2 = getDecimal(i_num2);
+            if (isAscendingSerie(decNum2))
+            {
+                ascendingSeriesCounter++;
+            }
+            int decNum3 = getDecimal(i_num3);
+            if (isAscendingSerie(decNum3))
+            {
+                ascendingSeriesCounter++;
+            }
+
+            return ascendingSeriesCounter;
+
+        }
+
+        private static int getDecimal(int i_num)
+        {
+            int decimalRepresentation = 0;
+            int currDig, counter = 0;
+
+            while (i_num > 0)
+            {
+                currDig = i_num % 10;
+                if (currDig == 1)
+                {
+                    decimalRepresentation = decimalRepresentation + (int)Math.Pow(2, counter);
+                }
+                i_num = i_num / 10;
+                counter++;
+            }
+            return decimalRepresentation;
+        }
+
+        private static bool isAscendingSerie(int i_decNum)
+        {
+            int currDig = i_decNum % 10;
+            i_decNum = i_decNum / 10;
+
+            while (i_decNum > 0)
+            {
+                int nextDigToCheck = i_decNum % 10;
+                if (currDig <= nextDigToCheck)
+                {
+                    return false;
+                }
+                currDig = nextDigToCheck;
+                i_decNum = i_decNum / 10;
+            }
+            return true;
+        }
+
+        private static int checkBiggest(int i_num1, int i_num2, int i_num3)
+        {
+
+            int decNum1 = getDecimal(i_num1);
+            int decNum2 = getDecimal(i_num2);
+            int decNum3 = getDecimal(i_num3);
+
+            return Math.Max(Math.Max(decNum1, decNum2), decNum3);
+        }
+
+        private static int checkSmallest(int i_num1, int i_num2, int i_num3)
+        {
+
+            int decNum1 = getDecimal(i_num1);
+            int decNum2 = getDecimal(i_num2);
+            int decNum3 = getDecimal(i_num3);
+
+            return Math.Min(Math.Min(decNum1, decNum2), decNum3);
+        }
+    }
+}

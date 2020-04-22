@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace B20_Ex01_5
+{
+    class Program
+    {
+        public static void Main()
+        {
+            probabilityStatistics();
+        }
+
+        private static void probabilityStatistics()
+        {
+            int userInput;
+
+            Console.WriteLine("Hello, Please enter a positive integer numbers with 9 digits.");
+            userInput = checkInputFromUser();
+
+            //Console.WriteLine("The bigest digit in the number is : {0}", );
+            //Console.WriteLine("The smallest digit in the number is : {0}", );
+            //Console.WriteLine("The number of digits that divided by 3 are : {0}", );
+            Console.WriteLine("The number of digits that bigger than unit digit are : {0}", countOfDigitsThatBiggerThanUnitDig(userInput));
+        }
+
+        private static int checkInputFromUser()
+        {
+            int resFromTryParse;
+            string input = Console.ReadLine();
+
+            input = input.Trim();
+
+            while (!int.TryParse(input, out resFromTryParse))
+            {
+                Console.WriteLine("Hello, Please enter a positive integer numbers with 9 digits."); input = Console.ReadLine();
+            }
+
+            if (!(input.Length == 9 && resFromTryParse > 0))
+            {
+                Console.WriteLine("Hello, Please enter a positive integer numbers with 9 digits.");
+                resFromTryParse = checkInputFromUser();
+            }
+
+            return resFromTryParse;
+        }
+
+        private static int countOfDigitsThatBiggerThanUnitDig(int i_UserInput)
+        {
+            int unitDig = i_UserInput % 10;
+            int countBiggerDigitThanUnit = 0;
+
+            for( int i = 0; i < 8; i++)
+            {
+                i_UserInput /= 10;
+                if(i_UserInput%10>unitDig)
+                {
+                    countBiggerDigitThanUnit++;
+                }
+            }
+            return countBiggerDigitThanUnit;
+        }
+    }
+}

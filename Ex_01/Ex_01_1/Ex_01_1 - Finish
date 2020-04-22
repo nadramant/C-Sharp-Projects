@@ -65,13 +65,13 @@ namespace B20_Ex01_1
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static bool isBinaryNumber(string i_str)
+        private static bool isBinaryNumber(string i_Str)
         {
             bool isBinaryNum = true;
 
             for (int i = 0; i < 9; i++)
             {
-                if (!(i_str[i].Equals('0') || i_str[i].Equals('1')))
+                if (!(i_Str[i].Equals('0') || i_Str[i].Equals('1')))
                 {
                     isBinaryNum = false;
                 }
@@ -81,85 +81,81 @@ namespace B20_Ex01_1
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static double numOfZeroesInAllNums(int i_num1, int i_num2, int i_num3)
+        private static double numOfZeroesInAllNums(int i_Num1, int i_Num2, int i_Num3)
         {
-            int counterZeros = 0, tempCounterZeros = 0;
+            int zeroesCounter = 0;
 
-            counterZeros = countNumOfZeroes(i_num1);
-            tempCounterZeros = countNumOfZeroes(i_num2);
-            counterZeros += tempCounterZeros;
-            tempCounterZeros = countNumOfZeroes(i_num3);
-            counterZeros += tempCounterZeros;
+            zeroesCounter += countNumOfZeroes(i_Num1);
+            zeroesCounter += countNumOfZeroes(i_Num2);
+            zeroesCounter += countNumOfZeroes(i_Num3);
 
-            return (double)counterZeros;
+            return (double)zeroesCounter;
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static int countNumOfZeroes(int i_num)
+        private static int countNumOfZeroes(int i_Num)
         {
             int zeroesCounter = 0;
-            int temp = i_num;
+            int currDig;
 
-            while (i_num != 0)
+            while (i_Num != 0)
             {
-                temp = i_num % 10;
-                if (temp == 0)
+                currDig = i_Num % 10;
+                if (currDig == 0)
                 {
                     zeroesCounter++;
                 }
 
-                i_num /= 10;
+                i_Num /= 10;
             }
 
             return zeroesCounter;
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static int isPowerOfTwo(int i_num1, int i_num2, int i_num3)
+        private static int isPowerOfTwo(int i_Num1, int i_Num2, int i_Num3)
         {
-            int numOfZeroes;
-            int counterPowOfTwo = 0;
+            int numOfZeroesInNum;
+            int powOfTwoCounter = 0;
 
-            numOfZeroes = countNumOfZeroes(i_num1);
-            if (numOfZeroes == 8)
+            numOfZeroesInNum = countNumOfZeroes(i_Num1);
+            if (numOfZeroesInNum == 8)
             {
-                counterPowOfTwo++;
+                powOfTwoCounter++;
             }
 
-            numOfZeroes = countNumOfZeroes(i_num2);
-            if (numOfZeroes == 8)
+            numOfZeroesInNum = countNumOfZeroes(i_Num2);
+            if (numOfZeroesInNum == 8)
             {
-                counterPowOfTwo++;
+                powOfTwoCounter++;
             }
 
-            numOfZeroes = countNumOfZeroes(i_num3);
-            if (numOfZeroes == 8)
+            numOfZeroesInNum = countNumOfZeroes(i_Num3);
+            if (numOfZeroesInNum == 8)
             {
-                counterPowOfTwo++;
+                powOfTwoCounter++;
             }
 
-            return counterPowOfTwo;
+            return powOfTwoCounter;
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static int numOfAscendingSeries(int i_num1, int i_num2, int i_num3)
+        private static int numOfAscendingSeries(int i_Num1, int i_Num2, int i_Num3)
         {
             int ascendingSeriesCounter = 0;
-            int decNum1 = getDecimalNumber(i_num1);
+            int decNum1 = getDecimalRepresentation(i_Num1);
+            int decNum2 = getDecimalRepresentation(i_Num2);
+            int decNum3 = getDecimalRepresentation(i_Num3);
 
             if (isAscendingSerie(decNum1))
             {
                 ascendingSeriesCounter++;
             }
 
-            int decNum2 = getDecimalNumber(i_num2);
-
             if (isAscendingSerie(decNum2))
             {
                 ascendingSeriesCounter++;
             }
-
-            int decNum3 = getDecimalNumber(i_num3);
 
             if (isAscendingSerie(decNum3))
             {
@@ -170,20 +166,20 @@ namespace B20_Ex01_1
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static int getDecimalNumber(int i_num)
+        private static int getDecimalRepresentation(int i_Num)
         {
             int decimalRepresentation = 0;
             int currDig, bitCounter = 0;
 
-            while (i_num > 0)
+            while (i_Num > 0)
             {
-                currDig = i_num % 10;
+                currDig = i_Num % 10;
                 if (currDig == 1)
                 {
-                    decimalRepresentation = decimalRepresentation + (int)Math.Pow(2, bitCounter);
+                    decimalRepresentation += (int)Math.Pow(2, bitCounter);
                 }
 
-                i_num = i_num / 10;
+                i_Num = i_Num / 10;
                 bitCounter++;
             }
 
@@ -191,16 +187,16 @@ namespace B20_Ex01_1
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static bool isAscendingSerie(int i_decimalNum)
+        private static bool isAscendingSerie(int i_DecimalNum)
         {
             bool isThereAcendingSerie = true;
-            int currDig = i_decimalNum % 10;
+            int currDig = i_DecimalNum % 10;
 
-            i_decimalNum = i_decimalNum / 10;
+            i_DecimalNum = i_DecimalNum / 10;
 
-            while (i_decimalNum > 0)
+            while (i_DecimalNum > 0)
             {
-                int nextDigToCheck = i_decimalNum % 10;
+                int nextDigToCheck = i_DecimalNum % 10;
 
                 if (currDig <= nextDigToCheck)
                 {
@@ -208,30 +204,30 @@ namespace B20_Ex01_1
                 }
 
                 currDig = nextDigToCheck;
-                i_decimalNum = i_decimalNum / 10;
+                i_DecimalNum = i_DecimalNum / 10;
             }
 
             return isThereAcendingSerie;
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static int checkBiggest(int i_binaryNum1, int i_binaryNum2, int i_binaryNum3)
+        private static int checkBiggest(int i_BinaryNum1, int i_BinaryNum2, int i_BinaryNum3)
         {
 
-            int decNum1 = getDecimalNumber(i_binaryNum1);
-            int decNum2 = getDecimalNumber(i_binaryNum2);
-            int decNum3 = getDecimalNumber(i_binaryNum3);
+            int decNum1 = getDecimalRepresentation(i_BinaryNum1);
+            int decNum2 = getDecimalRepresentation(i_BinaryNum2);
+            int decNum3 = getDecimalRepresentation(i_BinaryNum3);
 
             return Math.Max(Math.Max(decNum1, decNum2), decNum3);
         }
 
         //-----------------------------------------------------------------------------------------//
-        private static int checkSmallest(int i_binaryNum1, int i_binaryNum2, int i_binaryNum3)
+        private static int checkSmallest(int i_BinaryNum1, int i_BinaryNum2, int i_BinaryNum3)
         {
 
-            int decNum1 = getDecimalNumber(i_binaryNum1);
-            int decNum2 = getDecimalNumber(i_binaryNum2);
-            int decNum3 = getDecimalNumber(i_binaryNum3);
+            int decNum1 = getDecimalRepresentation(i_BinaryNum1);
+            int decNum2 = getDecimalRepresentation(i_BinaryNum2);
+            int decNum3 = getDecimalRepresentation(i_BinaryNum3);
 
             return Math.Min(Math.Min(decNum1, decNum2), decNum3);
         }

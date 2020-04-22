@@ -16,7 +16,7 @@ namespace B20_Ex01_2
         public static void BuildHourglass(int i_BaseOfHourglass, int i_NumOfSpaces)
         {
             printCharXTimes(i_NumOfSpaces, ' ');
-            if (i_BaseOfHourglass == 1)
+            if(i_BaseOfHourglass == 1)
             {
                 Console.WriteLine("*");
             }
@@ -31,12 +31,12 @@ namespace B20_Ex01_2
 
        private static void printCharXTimes(int i_NumOfPrints, char i_CharToPrint)
         {
-            for (int i = 0; i < i_NumOfPrints; i++)
+            for(int i = 0; i < i_NumOfPrints; i++)
             {
                 Console.Write(i_CharToPrint);
             }
 
-            if (i_CharToPrint == '*')
+            if(i_CharToPrint == '*')
             {
                 Console.Write("{0}", Environment.NewLine);
             }
@@ -47,13 +47,13 @@ namespace B20_Ex01_2
             int resFromTryParse;
             string input = Console.ReadLine();
 
-            while (!int.TryParse(input, out resFromTryParse))
+            while(!int.TryParse(input, out resFromTryParse))
             {
                 Console.WriteLine("Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
                 input = Console.ReadLine();
             }
 
-            if (!(resFromTryParse % 2 == 1 && resFromTryParse > 0))
+            if(!(resFromTryParse % 2 == 1 && resFromTryParse > 0))
             {
                 Console.WriteLine("Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
                 resFromTryParse = checkInput();

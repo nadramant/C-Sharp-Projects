@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace B20_Ex01_3
+{
+    class Program
+    {
+        public static void Main()
+        {
+            Console.WriteLine("Hello, Please enter the height of the hourglass that you want.");
+            int validNum = checkInput();
+            B20_Ex01_2.Program.BuildHourglass(validNum, 0);
+        }
+
+        private static int checkInput()
+        {
+            int resFromTryParse;
+            string input = Console.ReadLine();
+
+            while (!int.TryParse(input, out resFromTryParse))
+            {
+                Console.WriteLine("Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
+                input = Console.ReadLine();
+            }
+
+            if (resFromTryParse <= 0)
+            {
+                Console.WriteLine("Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
+                resFromTryParse = checkInput();
+            }
+            else if (resFromTryParse % 2 == 0 && resFromTryParse > 0)
+            {
+                resFromTryParse = resFromTryParse + 1;
+            }
+
+            return resFromTryParse;
+        }
+    }
+}

@@ -18,18 +18,18 @@ namespace B20_Ex01_3
             int resFromTryParse;
             string input = Console.ReadLine();
 
-            while (!int.TryParse(input, out resFromTryParse))
+            while(!int.TryParse(input, out resFromTryParse))
             {
                 Console.WriteLine("Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
                 input = Console.ReadLine();
             }
 
-            if (resFromTryParse <= 0)
+            if(resFromTryParse <= 0)
             {
                 Console.WriteLine("Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
                 resFromTryParse = checkInput();
             }
-            else if (resFromTryParse % 2 == 0 && resFromTryParse > 0)
+            else if(resFromTryParse % 2 == 0 && resFromTryParse > 0)
             {
                 resFromTryParse = resFromTryParse + 1;
             }

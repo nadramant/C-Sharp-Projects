@@ -10,8 +10,7 @@ namespace B20_Ex01_1
         {
             binarySeries();
         }
-
-        //-----------------------------------------------------------------------------------------//
+        
         private static void binarySeries()
         {
             int num1, num2, num3;
@@ -31,7 +30,6 @@ namespace B20_Ex01_1
             Console.WriteLine("There smallest number is : {0}.", checkSmallest(num1, num2, num3));
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static int checkInputFromUser()
         {
             int resFromTryParse;
@@ -39,7 +37,7 @@ namespace B20_Ex01_1
 
             input = input.Trim();
 
-            while (!int.TryParse(input, out resFromTryParse))
+            while(!int.TryParse(input, out resFromTryParse))
             {
                 Console.WriteLine(@"Invalid input.{0}Please enter 3 positive integer numbers with 9 digits each one.", Environment.NewLine);
                 input = Console.ReadLine();
@@ -47,15 +45,15 @@ namespace B20_Ex01_1
 
             bool isValidInputNumber = false;
 
-            if (input.Length == 9 && resFromTryParse > 0)
+            if(input.Length == 9 && resFromTryParse > 0)
             {
-                if (isBinaryNumber(input))
+                if(isBinaryNumber(input))
                 {
                     isValidInputNumber = true;
                 }
             }
 
-            if (!isValidInputNumber)
+            if(!isValidInputNumber)
             {
                 Console.WriteLine(@"Invalid input.{0}Please enter 3 positive integer numbers with 9 digits each one.", Environment.NewLine);
                 resFromTryParse = checkInputFromUser();
@@ -64,14 +62,13 @@ namespace B20_Ex01_1
             return resFromTryParse;
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static bool isBinaryNumber(string i_Str)
         {
             bool isBinaryNum = true;
 
-            for (int i = 0; i < 9; i++)
+            for(int i = 0; i < 9; i++)
             {
-                if (!(i_Str[i].Equals('0') || i_Str[i].Equals('1')))
+                if(!(i_Str[i].Equals('0') || i_Str[i].Equals('1')))
                 {
                     isBinaryNum = false;
                 }
@@ -80,7 +77,6 @@ namespace B20_Ex01_1
             return isBinaryNum;
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static double numOfZeroesInAllNums(int i_Num1, int i_Num2, int i_Num3)
         {
             int zeroesCounter = 0;
@@ -92,16 +88,15 @@ namespace B20_Ex01_1
             return (double)zeroesCounter;
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static int countNumOfZeroes(int i_Num)
         {
             int zeroesCounter = 0;
             int currDig;
 
-            while (i_Num != 0)
+            while(i_Num != 0)
             {
                 currDig = i_Num % 10;
-                if (currDig == 0)
+                if(currDig == 0)
                 {
                     zeroesCounter++;
                 }
@@ -112,26 +107,25 @@ namespace B20_Ex01_1
             return zeroesCounter;
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static int isPowerOfTwo(int i_Num1, int i_Num2, int i_Num3)
         {
             int numOfZeroesInNum;
             int powOfTwoCounter = 0;
 
             numOfZeroesInNum = countNumOfZeroes(i_Num1);
-            if (numOfZeroesInNum == 8)
+            if(numOfZeroesInNum == 8)
             {
                 powOfTwoCounter++;
             }
 
             numOfZeroesInNum = countNumOfZeroes(i_Num2);
-            if (numOfZeroesInNum == 8)
+            if(numOfZeroesInNum == 8)
             {
                 powOfTwoCounter++;
             }
 
             numOfZeroesInNum = countNumOfZeroes(i_Num3);
-            if (numOfZeroesInNum == 8)
+            if(numOfZeroesInNum == 8)
             {
                 powOfTwoCounter++;
             }
@@ -139,7 +133,6 @@ namespace B20_Ex01_1
             return powOfTwoCounter;
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static int numOfAscendingSeries(int i_Num1, int i_Num2, int i_Num3)
         {
             int ascendingSeriesCounter = 0;
@@ -147,17 +140,17 @@ namespace B20_Ex01_1
             int decNum2 = getDecimalRepresentation(i_Num2);
             int decNum3 = getDecimalRepresentation(i_Num3);
 
-            if (isAscendingSerie(decNum1))
+            if(isAscendingSerie(decNum1))
             {
                 ascendingSeriesCounter++;
             }
 
-            if (isAscendingSerie(decNum2))
+            if(isAscendingSerie(decNum2))
             {
                 ascendingSeriesCounter++;
             }
 
-            if (isAscendingSerie(decNum3))
+            if(isAscendingSerie(decNum3))
             {
                 ascendingSeriesCounter++;
             }
@@ -165,16 +158,15 @@ namespace B20_Ex01_1
             return ascendingSeriesCounter;
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static int getDecimalRepresentation(int i_Num)
         {
             int decimalRepresentation = 0;
             int currDig, bitCounter = 0;
 
-            while (i_Num > 0)
+            while(i_Num > 0)
             {
                 currDig = i_Num % 10;
-                if (currDig == 1)
+                if(currDig == 1)
                 {
                     decimalRepresentation += (int)Math.Pow(2, bitCounter);
                 }
@@ -186,7 +178,6 @@ namespace B20_Ex01_1
             return decimalRepresentation;
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static bool isAscendingSerie(int i_DecimalNum)
         {
             bool isThereAcendingSerie = true;
@@ -194,11 +185,11 @@ namespace B20_Ex01_1
 
             i_DecimalNum = i_DecimalNum / 10;
 
-            while (i_DecimalNum > 0)
+            while(i_DecimalNum > 0)
             {
                 int nextDigToCheck = i_DecimalNum % 10;
 
-                if (currDig <= nextDigToCheck)
+                if(currDig <= nextDigToCheck)
                 {
                     isThereAcendingSerie = false;
                 }
@@ -210,7 +201,6 @@ namespace B20_Ex01_1
             return isThereAcendingSerie;
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static int checkBiggest(int i_BinaryNum1, int i_BinaryNum2, int i_BinaryNum3)
         {
 
@@ -221,7 +211,6 @@ namespace B20_Ex01_1
             return Math.Max(Math.Max(decNum1, decNum2), decNum3);
         }
 
-        //-----------------------------------------------------------------------------------------//
         private static int checkSmallest(int i_BinaryNum1, int i_BinaryNum2, int i_BinaryNum3)
         {
 

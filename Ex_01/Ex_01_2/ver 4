@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace B20_Ex01_2
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            BuildHourglass(5, 0);
+        }
+
+        public static void BuildHourglass(int i_BaseOfHourglass, int i_NumOfSpaces)
+        {
+            printCharXTimes(i_NumOfSpaces, ' ');
+            if (i_BaseOfHourglass == 1)
+            {
+                Console.WriteLine("*");
+            }
+            else
+            {
+                printCharXTimes(i_BaseOfHourglass, '*');
+                BuildHourglass(i_BaseOfHourglass - 2, i_NumOfSpaces + 1);
+                printCharXTimes(i_NumOfSpaces, ' ');
+                printCharXTimes(i_BaseOfHourglass, '*');
+            }
+        }
+
+        private static void printCharXTimes(int i_NumOfPrints, char i_CharToPrint)
+        {
+            StringBuilder rowToPrint = new StringBuilder();
+
+            for (int i = 0; i < i_NumOfPrints; i++)
+            {
+                rowToPrint.Append(i_CharToPrint);
+            }
+
+            Console.Write(rowToPrint);
+            if (i_CharToPrint == '*')
+            {
+                Console.Write("{0}", Environment.NewLine);
+            }
+        }
+    }
+}

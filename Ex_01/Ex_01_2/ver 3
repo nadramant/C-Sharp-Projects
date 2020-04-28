@@ -1,0 +1,68 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace B20_Ex01_2
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            Console.WriteLine("Hello, Please enter an odd number of '*' to the hourglass.");
+            int validNum = checkInput();
+            BuildHourglass(validNum, 0);
+        }
+
+        public static void BuildHourglass(int i_BaseOfHourglass, int i_NumOfSpaces)
+        {
+            printCharXTimes(i_NumOfSpaces, ' ');
+            if(i_BaseOfHourglass == 1)
+            {
+                Console.WriteLine("*");
+            }
+            else
+            {
+                printCharXTimes(i_BaseOfHourglass, '*');
+                BuildHourglass(i_BaseOfHourglass - 2, i_NumOfSpaces + 1);
+                printCharXTimes(i_NumOfSpaces, ' ');
+                printCharXTimes(i_BaseOfHourglass, '*');
+            }
+        }
+
+       private static void printCharXTimes(int i_NumOfPrints, char i_CharToPrint)
+        {
+            StringBuilder rowToPrint = new StringBuilder();
+
+            for(int i = 0; i < i_NumOfPrints; i++)
+            {
+                rowToPrint.Append(i_CharToPrint);
+            }
+
+            Console.Write(rowToPrint);
+            if(i_CharToPrint == '*')
+            {
+                Console.Write("{0}", Environment.NewLine);
+            }
+        }
+
+        private static int checkInput()
+        {
+            int resFromTryParse;
+            string input = Console.ReadLine();
+
+            while(!int.TryParse(input, out resFromTryParse))
+            {
+                Console.WriteLine("Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
+                input = Console.ReadLine();
+            }
+
+            if(!(resFromTryParse % 2 == 1 && resFromTryParse > 0))
+            {
+                Console.WriteLine("Invalid input.{0}Please enter an odd number of '*' to the hourglass.", Environment.NewLine);
+                resFromTryParse = checkInput();
+            }
+
+            return resFromTryParse;
+        }
+    }
+}

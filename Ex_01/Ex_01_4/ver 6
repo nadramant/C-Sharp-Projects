@@ -43,7 +43,7 @@ namespace B20_Ex01_4
             else
             {
                 numberOfUpperCases = countNumOfUpperCasesInTheString(userInput);
-                Console.WriteLine("There are {0} uppercase letters in the string", numberOfUpperCases);
+                Console.WriteLine("There are {0} upper case letters in the string", numberOfUpperCases);
             }
         }
 

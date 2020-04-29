@@ -1,0 +1,117 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace B20_Ex01_5
+{
+    class Program
+    {
+        public static void Main()
+        {
+            probabilityStatistics();
+        }
+
+        private static void probabilityStatistics()
+        {
+            int userInput;
+
+            Console.WriteLine("Hello, Please enter a positive integer number with 9 digits.");
+            userInput = checkInputFromUser();
+
+            string msg = string.Format(
+            @"The biggest digit in the number is : {0}.
+The smallest digit in the number is : {1}.
+There are {2} digits which are divided by 3 without remainder.
+There are {3} digits that bigger than the unit digit.", findBiggestDigit(userInput), findSmallestDigit(userInput), findNumOfDivByThreeDig(userInput), numOfDigitsThatBiggerThanUnitDig(userInput));
+
+            Console.WriteLine(msg);
+        }
+
+        private static int checkInputFromUser()
+        {
+            int resFromTryParse;
+            string input = Console.ReadLine();
+
+            input = input.Trim();
+
+            while(!int.TryParse(input, out resFromTryParse))
+            {
+                Console.WriteLine("Invalid input.{0}Please enter a positive integer number with 9 digits.", Environment.NewLine);
+                input = Console.ReadLine();
+            }
+
+            if(!(input.Length == 9 && resFromTryParse > 0))
+            {
+                Console.WriteLine("Invalid input.{0}Please enter a positive integer number with 9 digits.", Environment.NewLine);
+                resFromTryParse = checkInputFromUser();
+            }
+
+            return resFromTryParse;
+        }
+
+        private static int findBiggestDigit(int i_Num)
+        {
+            int currDig, currMax = 0;
+
+            while(i_Num > 0)
+            {
+                currDig = i_Num % 10;
+                currMax = Math.Max(currMax, currDig);
+                i_Num = i_Num / 10;
+            }
+
+            return currMax;
+        }
+
+        private static int findSmallestDigit(int i_Num)
+        {
+            int currDig, currMin = 9;
+
+            for(int i = 0; i < 9; i++)
+            {
+                currDig = i_Num % 10;
+                currMin = Math.Min(currMin, currDig);
+                i_Num = i_Num / 10;
+            }
+
+            return currMin;
+        }
+
+        private static int findNumOfDivByThreeDig(int i_Num)
+        {
+            int currDig, divByThreeCounter = 0, digitsCounter = 0;
+
+            while(i_Num > 0)
+            {
+                currDig = i_Num % 10;
+                if(currDig % 3 == 0)
+                {
+                    divByThreeCounter++;
+                }
+                i_Num = i_Num / 10;
+                digitsCounter++;
+            }
+
+            divByThreeCounter = divByThreeCounter + (9 - digitsCounter);
+
+            return divByThreeCounter;
+        }
+
+        private static int numOfDigitsThatBiggerThanUnitDig(int i_Num)
+        {
+            int unitDig = i_Num % 10;
+            int BiggerThanUnitDigitCounter = 0;
+
+            while(i_Num > 0)
+            {
+                i_Num /= 10;
+                if(i_Num % 10 > unitDig)
+                {
+                    BiggerThanUnitDigitCounter++;
+                }
+            }
+
+            return BiggerThanUnitDigitCounter;
+        }
+    }
+}

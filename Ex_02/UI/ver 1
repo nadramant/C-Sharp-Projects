@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace UI
+{
+    public class UI
+    {
+        private const string k_AgainstCumpter = "2";
+        private const string k_AgainstOtherPlayer = "1";
+        private const int k_BoardMinSize = 4;
+        private const int k_BoardMaxSize = 6;
+        private string m_FirstUserName;
+        private string m_SecondUserName;
+        private bool m_IsAgainstComputer;
+
+        public void Run()
+        {
+            Console.WriteLine("Hello and welcome to the memory game!{0}Please enter your name.", Environment.NewLine);
+            m_FirstUserName = checkUserName();
+
+            Console.WriteLine(@"Please enter your choice :
+1. Playing against other player.
+2. Playing against the computer.");
+            checkUserChoice();
+
+            if(m_IsAgainstComputer == false)
+            {
+                Console.WriteLine("Please enter the other user name.");
+                m_SecondUserName = checkUserName();
+            }
+
+            int boardLength, boardWidth;
+            getBoardWidthAndLength(out boardLength, out boardWidth);
+
+           Board.Board<char> board = new Board.Board<char>(boardLength, boardWidth);
+           board.PrintBoard();
+        }
+
+        private string checkUserName()
+        {
+            string strToCheck = Console.ReadLine();
+            bool isValid = true;
+
+            foreach (char charInString in strToCheck)
+            {
+                if (!(char.IsLetter(charInString) || charInString == ' '))
+                {
+                    isValid = false;
+                }
+            }
+
+            while (isValid == false)
+            {
+                Console.WriteLine(@"Invalid user name!
+Please enter your name.");
+                strToCheck = Console.ReadLine();
+            }
+
+            return strToCheck;
+        }
+
+        private void checkUserChoice()
+        {
+            string userChoice = Console.ReadLine();
+
+            if (string.Equals(userChoice, k_AgainstOtherPlayer))
+            {
+                m_IsAgainstComputer = false;
+            }
+            else if (string.Equals(userChoice, k_AgainstCumpter))
+            {
+                m_IsAgainstComputer = true;
+            }
+            else
+            {
+                Console.WriteLine(@"Invalid choice!
+Please enter your choice again.");
+                checkUserChoice();
+            }
+        }
+
+        private void getBoardWidthAndLength(out int boardLength, out int boardWidth)
+        {
+            Console.WriteLine(@"Please enter the width and the length of the board.
+The width and length should be between 4-6, except 5x5.");
+            Console.WriteLine("Enter width : ");
+            boardLength = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter length : ");
+            boardWidth = int.Parse(Console.ReadLine());
+
+            if ((k_BoardMinSize <= boardLength && boardLength <= k_BoardMaxSize) && (k_BoardMinSize <= boardWidth && boardWidth <= k_BoardMaxSize))
+            {
+                if (boardLength == 5 && boardWidth == 5)
+                {
+                    Console.WriteLine(@"Invalid input.");
+                    getBoardWidthAndLength(out boardLength, out boardWidth);
+                }
+            }
+            else
+            {
+                Console.WriteLine(@"Invalid input.");
+                getBoardWidthAndLength(out boardLength, out boardWidth);
+            }
+        }
+    }
+}

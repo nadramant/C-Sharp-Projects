@@ -1,0 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Program
+{
+    class Program
+    {
+        public static void Main()
+        {
+            UI.UI ui = new UI.UI();
+          
+            ui.Run();
+        }
+    }
+}
+

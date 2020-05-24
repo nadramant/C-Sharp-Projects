@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MemoryGame
+{
+    class Player
+    {
+        private string m_UserName;
+        private bool m_IsComputer;
+
+        public Player(string i_UserName, bool i_IsComputer)
+        {
+            m_UserName = i_UserName;
+            m_IsComputer = i_IsComputer;
+        }
+
+        public string UserName
+        {
+            get
+            {
+                return m_UserName;
+            }
+            set
+            {
+                m_UserName = value;
+            }
+        }
+
+        public bool isComputer
+        {
+            get
+            {
+                return m_IsComputer;
+            }
+            set
+            {
+                m_IsComputer = value;
+            }
+        }
+
+        public void PlayTurn<T>(Board<T> m_Board)
+        {
+            if (m_IsComputer)
+            {
+                playComputerTurn(m_Board);
+            }
+            else
+            {
+                playHumanTurn(m_Board);
+            }        
+        }
+
+        private void playHumanTurn<T>(Board<T> m_Board)
+        {
+
+        }
+
+        private void playComputerTurn<T>(Board<T> m_Board)
+        {
+
+        }
+    }
+}

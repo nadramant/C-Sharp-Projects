@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MemoryGame
+{
+    public class Board<T>
+    {
+        private Cell<T>[,] m_GameBoard;
+
+        public Board(int i_BoardLength, int i_BoardWidth)
+        {
+            m_GameBoard = new Cell<T>[i_BoardLength, i_BoardWidth];
+            for (int i = 0; i < i_BoardLength; i++)
+                for (int j = 0; j < i_BoardWidth; j++)
+                    m_GameBoard[i, j] = new Cell<T>();
+        }
+
+        public void InitialBoard(List<T> i_ContantArray)
+        {
+            int colNum;
+            int rowNum;
+            Random colRnd = new Random();
+            
+            Random rowRnd = new Random();
+            int Cols = m_GameBoard.GetLength(1);
+            int Rows = m_GameBoard.GetLength(0);
+
+            foreach (T item in i_ContantArray)
+            {
+                colNum = colRnd.Next(0,Cols);
+                rowNum = rowRnd.Next(0, Rows);
+
+                while (this.m_GameBoard[rowNum, colNum].IsCellSetted==true)
+                {
+                    colNum = colRnd.Next(0, Cols);
+                    rowNum = rowRnd.Next(0, Rows);
+                }
+
+                this.m_GameBoard[rowNum, colNum].CellContant = item;
+                this.m_GameBoard[rowNum, colNum].IsCellSetted = true;
+            }
+        }
+
+        public Cell<T>[,] GameBoard
+        {
+            get
+            {
+                return m_GameBoard;
+            }
+            set
+            {
+                m_GameBoard = value;
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MemoryGame
+{
+    public class Cell<T>
+    {
+        private T m_Contant;
+        private bool m_IsRevieled;
+        private bool m_IsSetted = false;
+    }
+}

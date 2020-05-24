@@ -1,0 +1,103 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MemoryGame
+{
+    public class Board<T>
+    {
+        private Cell<T>[,] m_GameBoard;
+
+        public Cell<T> this[int index1, int index2]
+        {
+            get
+            {
+                return m_GameBoard[index1, index2];
+            }
+            set
+            {
+                m_GameBoard[index1, index2] = value;
+            }
+        }
+
+        public Board(int i_BoardLength, int i_BoardWidth)
+        {
+            m_GameBoard = new Cell<T>[i_BoardLength, i_BoardWidth];
+            for (int i = 0; i < i_BoardLength; i++)
+            {
+                for (int j = 0; j < i_BoardWidth; j++)
+                {
+                    m_GameBoard[i, j] = new Cell<T>();
+                }
+            }
+        }
+
+        public void InitialBoard(List<T> i_ContantArray)
+        {
+            int colNum;
+            int rowNum;
+            Random colRnd = new Random();
+            Random rowRnd = new Random();
+
+            foreach (T item in i_ContantArray)
+            {
+                colNum = colRnd.Next(0, Cols);
+                rowNum = rowRnd.Next(0, Rows);
+
+                if (this.m_GameBoard[rowNum, colNum].IsCellSetted == true)
+                {
+                    findNextCell(out rowNum, out colNum);
+                }
+
+                this.m_GameBoard[rowNum, colNum].CellContant = item;
+                this.m_GameBoard[rowNum, colNum].IsCellSetted = true;
+            }
+        }
+
+        private void findNextCell(out int o_RowNum, out int o_ColNum)
+        {
+            o_RowNum = o_ColNum = 0; 
+            for (int i = 0; i < m_GameBoard.GetLength(0); i++)
+            {
+                for (int j = 0; j < m_GameBoard.GetLength(1); j++)
+                {
+                    if (m_GameBoard[i, j].IsCellSetted == false)
+                    {
+                        o_RowNum = i;
+                        o_ColNum = j;
+                        break;
+                    }
+                }
+            }
+        }
+
+        public Cell<T>[,] GameBoard
+        {
+            get
+            {
+                return m_GameBoard;
+            }
+            set
+            {
+                m_GameBoard = value;
+            }
+        }
+
+        public int Rows
+        {
+            get
+            {
+                return GameBoard.GetLength(0);
+            }
+        }
+
+        public int Cols
+        {
+            get
+            {
+                return GameBoard.GetLength(1);
+            }
+        }
+      
+    }
+}

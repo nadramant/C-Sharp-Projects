@@ -1,0 +1,169 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MemoryGame
+{
+    public class UserInterface
+    {
+        private const string k_AgainstCumpter = "2";
+        private const string k_AgainstOtherPlayer = "1";
+        private const int k_BoardMinSize = 4;
+        private const int k_BoardMaxSize = 6;
+        private Player m_FirstPlayer;
+        private Player m_SecondPlayer;
+        private Board<char> m_Board;
+
+        public void Run()
+        {
+            Console.WriteLine("Hello and welcome to the memory game!{0}Please enter your name.", Environment.NewLine);
+
+            m_FirstPlayer = new Player(checkUserName(), false);
+
+            Console.WriteLine(@"Please enter your choice :
+1. Playing against other player.
+2. Playing against the computer.");
+            bool isAgainstComputer = checkUserChoice();
+
+            if (isAgainstComputer == false)
+            {
+                Console.WriteLine("Please enter the other user name.");
+                m_SecondPlayer = new Player(checkUserName(), false);
+            }
+            else
+            {
+                m_SecondPlayer = new Player("Computer", true);
+            }
+
+            int boardLength, boardWidth;
+            getBoardWidthAndLength(out boardLength, out boardWidth);
+
+            m_Board = new Board<char>(boardLength, boardWidth);
+            printBoard();
+
+            List<char> contantArray = new List<char>(boardLength * boardWidth);
+            char currVal = 'A';
+            for (int i = 0; i < (boardLength * boardWidth)/2; i++)
+            {
+                contantArray.Add(currVal);
+                contantArray.Add(currVal);
+                currVal++;
+            }
+
+            m_Board.InitialBoard(contantArray); // מקבל מערך של char שהוא list
+            Console.WriteLine("Text");
+            printBoard();
+
+        }
+
+        private string checkUserName()
+        {
+            string strToCheck = Console.ReadLine();
+            bool isValid = true;
+
+            foreach (char charInString in strToCheck)
+            {
+                if (!(char.IsLetter(charInString) || charInString == ' '))
+                {
+                    isValid = false;
+                }
+            }
+
+            while (isValid == false)
+            {
+                Console.WriteLine(@"Invalid user name!
+Please enter your name.");
+                strToCheck = Console.ReadLine();
+            }
+
+            return strToCheck;
+        }
+
+        private bool checkUserChoice()
+        {
+            bool choice;
+            string userChoice = Console.ReadLine();
+
+            if (string.Equals(userChoice, k_AgainstOtherPlayer))
+            {
+                choice = false;
+            }
+            else if (string.Equals(userChoice, k_AgainstCumpter))
+            {
+                choice = true;
+            }
+            else
+            {
+                Console.WriteLine(@"Invalid choice!
+Please enter your choice again.");
+                choice = checkUserChoice();
+            }
+
+            return choice;
+        }
+
+        private void getBoardWidthAndLength(out int boardLength, out int boardWidth)
+        {
+            Console.WriteLine(@"Please enter the width and the length of the board.
+The width and length should be between 4-6, except 5x5.");
+            Console.WriteLine("Enter width : ");
+            boardLength = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter length : ");
+            boardWidth = int.Parse(Console.ReadLine());
+
+            if ((k_BoardMinSize <= boardLength && boardLength <= k_BoardMaxSize) && (k_BoardMinSize <= boardWidth && boardWidth <= k_BoardMaxSize))
+            {
+                if (boardLength == 5 && boardWidth == 5)
+                {
+                    Console.WriteLine(@"Invalid input.");
+                    getBoardWidthAndLength(out boardLength, out boardWidth);
+                }
+            }
+            else
+            {
+                Console.WriteLine(@"Invalid input.");
+                getBoardWidthAndLength(out boardLength, out boardWidth);
+            }
+        }
+
+        private void printBoard()
+        {
+            char charToPrint = 'A';
+
+            Console.Write("    ");
+            for (int i = 0; i < m_Board.GameBoard.GetLength(1); i++)
+            {
+                Console.Write("{0}   ", charToPrint);
+                charToPrint++;
+            }
+            StringBuilder boundaryLine = new StringBuilder(@"
+  ");
+            boundaryLine.Append('=', 4 * m_Board.GameBoard.GetLength(1) + 1);
+
+            Console.Write("{0}{1}", boundaryLine, Environment.NewLine);
+            for (int i = 0; i < m_Board.GameBoard.GetLength(0); i++)
+            {
+                Console.Write("{0} ", i + 1);
+                for (int j = 0; j < m_Board.GameBoard.GetLength(1); j++)
+                {
+                    Console.Write("| {0} ", m_Board.GameBoard[i, j].CellContant);
+                }
+                Console.Write("|{0}{1}", boundaryLine, Environment.NewLine);
+            }
+        }
+    }
+}
+
+//private Dictionary<int, char> getContent(int i_BoardLength, int i_BoardWidth)
+//{
+//    Dictionary<int, char> contantInGame = new Dictionary<int, char>();
+//    int currKey = 1;
+//    char currVal = 'A';
+
+//    for (int i = 0; i < (i_BoardLength * i_BoardWidth) / 2; i++, currKey++, currVal++)
+//    {
+//        contantInGame.Add(currKey, currVal);
+//    }
+
+//    return contantInGame;
+//}

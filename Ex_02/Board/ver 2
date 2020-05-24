@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MemoryGame
+{
+    public class Board<T>
+    {
+        private Cell<T>[,] m_GameBoard;
+
+        public Board(int i_BoardLength, int i_BoardWidth)
+        {
+            m_GameBoard = new Cell<T>[i_BoardLength, i_BoardWidth];
+        }
+
+        public void InitialBoard(List<T> i_ContantArray)
+        {
+
+        }
+
+        public Cell<T>[,] GameBoard
+        {
+            get
+            {
+                return m_GameBoard;
+            }
+            set
+            {
+                m_GameBoard = value;
+            }
+        }
+    }
+}

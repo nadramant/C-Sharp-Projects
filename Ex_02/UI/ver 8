@@ -1,0 +1,335 @@
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+
+namespace MemoryGame
+{
+    public class UserInterface
+    {
+        public enum eOtherPlayerType
+        {
+            AgainstOtherPlayer = 1,
+            AgainstComputer
+        }
+
+        public enum ePlayerTurn
+        {
+            FirstPlayerTurn,
+            SecondPlayerTurn
+        }
+
+        private const int k_BoardMinSize = 4;
+        private const int k_BoardMaxSize = 6;
+        private Player m_FirstPlayer;
+        private Player m_SecondPlayer;
+        private Board<char> m_Board;
+
+        public void Run()
+        {
+            Console.WriteLine("Hello and welcome to the memory game!{0}Please enter your name.", Environment.NewLine);
+
+            m_FirstPlayer = new Player(checkUserName(), false);
+
+            Console.WriteLine(@"Please enter your choice :
+1. Playing against other player.
+2. Playing against the computer.");
+            bool isAgainstComputer = checkUserOpponent();
+
+            if (isAgainstComputer == false)
+            {
+                Console.WriteLine("Please enter the other user name.");
+                m_SecondPlayer = new Player(checkUserName(), false);
+            }
+            else
+            {
+                m_SecondPlayer = new Player("Computer", true);
+            }
+
+            int boardLength, boardWidth;
+
+            getBoardWidthAndLength(out boardLength, out boardWidth);
+            m_Board = new Board<char>(boardLength, boardWidth);
+            List<char> contantArray = MakeContantArray();
+            m_Board.InitialBoard(contantArray);
+            playGame();
+        }
+
+        private string checkUserName()
+        {
+            string strToCheck = Console.ReadLine();
+            bool isValid = true;
+
+            foreach (char charInString in strToCheck)
+            {
+                if (!(char.IsLetter(charInString) || charInString == ' '))
+                {
+                    isValid = false;
+                }
+            }
+
+            while (isValid == false)
+            {
+                Console.WriteLine(@"Invalid user name!
+Please enter your name.");
+                strToCheck = Console.ReadLine();
+            }
+
+            return strToCheck;
+        }
+
+        private bool checkUserOpponent()
+        {
+            bool choice;
+            int intChoice;
+
+            while (int.TryParse(Console.ReadLine(), out intChoice) == false)
+            {
+                Console.WriteLine(@"Invalid choice!
+Please enter your choice again.");
+            }
+
+            eOtherPlayerType eUserChoice = (eOtherPlayerType)intChoice;
+
+            if (eUserChoice == eOtherPlayerType.AgainstOtherPlayer)
+            {
+                choice = false;
+            }
+            else if (eUserChoice == eOtherPlayerType.AgainstComputer)
+            {
+                choice = true;
+            }
+            else
+            {
+                Console.WriteLine(@"Invalid choice!
+Please enter your choice again.");
+                choice = checkUserOpponent();
+            }
+
+            return choice;
+        }
+
+        private void getBoardWidthAndLength(out int o_BoardLength, out int o_BoardWidth)
+        {
+            Console.WriteLine(@"Please enter the width and the length of the board.
+The width and length should be between 4-6, except 5x5.");
+            Console.WriteLine("Enter width : ");
+            o_BoardLength = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter length : ");
+            o_BoardWidth = int.Parse(Console.ReadLine());
+
+            if ((k_BoardMinSize <= o_BoardLength && o_BoardLength <= k_BoardMaxSize) && (k_BoardMinSize <= o_BoardWidth && o_BoardWidth <= k_BoardMaxSize))
+            {
+                if (o_BoardLength == 5 && o_BoardWidth == 5)
+                {
+                    Console.WriteLine(@"Invalid input.");
+                    getBoardWidthAndLength(out o_BoardLength, out o_BoardWidth);
+                }
+            }
+            else
+            {
+                Console.WriteLine(@"Invalid input.");
+                getBoardWidthAndLength(out o_BoardLength, out o_BoardWidth);
+            }
+        }
+
+        private void printBoard()
+        {
+            char charToPrint = 'A';
+
+            Console.Write("    ");
+            for (int i = 0; i < m_Board.Cols; i++)
+            {
+                Console.Write("{0}   ", charToPrint);
+                charToPrint++;
+            }
+            StringBuilder boundaryLine = new StringBuilder(@"
+  ");
+            boundaryLine.Append('=', 4 * m_Board.Cols + 1);
+
+            Console.Write("{0}{1}", boundaryLine, Environment.NewLine);
+            for (int i = 0; i < m_Board.Rows; i++)
+            {
+                Console.Write("{0} ", i + 1);
+                for (int j = 0; j < m_Board.Cols; j++)
+                {
+                    if (m_Board[i, j].IsRevealed == true)
+                    {
+                        Console.Write("| {0} ", m_Board[i, j].CellContant);
+                    }
+                    else
+                    {
+                        Console.Write("|   ");
+                    }
+                }
+                Console.Write("|{0}{1}", boundaryLine, Environment.NewLine);
+            }
+        }
+
+        public List<char> MakeContantArray()
+        {
+            List<char> contantArray = new List<char>(m_Board.Rows * m_Board.Cols);
+
+            char currVal = 'A';
+            for (int i = 0; i < (m_Board.Rows * m_Board.Cols) / 2; i++, currVal++)
+            {
+                contantArray.Add(currVal);
+                contantArray.Add(currVal);
+            }
+
+            return contantArray;
+        }
+
+        private void playGame()
+        {
+            ePlayerTurn currTurn = getFirstPlayerTurn();
+
+            Console.WriteLine("Current game board : ");
+            printBoard();
+
+            while (isThereAWinner() == false)
+            {
+
+                if (currTurn == ePlayerTurn.FirstPlayerTurn)
+                {
+                    Console.WriteLine("Now it is {0}'s turn", m_FirstPlayer.UserName);
+                    currTurn = playTurn(m_FirstPlayer, currTurn, ePlayerTurn.SecondPlayerTurn);
+                }
+                else
+                {
+                    Console.WriteLine("Now it is {0}'s turn", m_SecondPlayer.UserName);
+                    currTurn = playTurn(m_SecondPlayer, currTurn, ePlayerTurn.FirstPlayerTurn);
+                }
+            }
+        }
+
+        private ePlayerTurn playTurn(Player i_CurrentPlayer, ePlayerTurn i_CurrentPlayerTurn, ePlayerTurn i_OppenentTurn)
+        {
+            int firstPickRowIndex, firstPickColIndex;
+            int secondPickRowIndex, secondPickColIndex;
+            ePlayerTurn nextPlayerTurn;
+
+            pickValidSquare(out firstPickRowIndex, out firstPickColIndex, i_CurrentPlayer.isComputer);
+            pickValidSquare(out secondPickRowIndex, out secondPickColIndex, i_CurrentPlayer.isComputer);
+
+            if (m_Board[firstPickRowIndex, firstPickColIndex].CellContant == m_Board[secondPickRowIndex, secondPickColIndex].CellContant)
+            {
+                i_CurrentPlayer.Points++;
+                nextPlayerTurn = i_CurrentPlayerTurn;
+            }
+            else
+            {
+                m_Board[firstPickRowIndex, firstPickColIndex].IsRevealed = false;
+                m_Board[secondPickRowIndex, secondPickColIndex].IsRevealed = false;
+                nextPlayerTurn = i_OppenentTurn;
+                Thread.Sleep(2000);  
+            }
+            Ex02.ConsoleUtils.Screen.Clear();
+
+            return nextPlayerTurn;
+        }
+
+        private ePlayerTurn getFirstPlayerTurn()
+        {
+            Random randPlayer = new Random();
+            ePlayerTurn firstPlayerTurn = (ePlayerTurn)randPlayer.Next(1);
+
+            if (firstPlayerTurn == ePlayerTurn.FirstPlayerTurn)
+            {
+                Console.WriteLine(@"The first player who plays is - {0}.
+Good Luck!", m_FirstPlayer.UserName);
+            }
+            else
+            {
+                Console.WriteLine(@"The first player who plays is - {0}.
+Good Luck!", m_SecondPlayer.UserName);
+            }
+
+            return firstPlayerTurn;
+        }
+
+        private void pickValidSquare(out int pickedRowIndex, out int pickedColIndex, bool i_isComputer)
+        {
+
+            if (i_isComputer)
+            {
+                pickValidSquareForComputer(out pickedRowIndex, out pickedColIndex);
+            }
+            else
+            {
+                pickValidSquareForHuman(out pickedRowIndex, out pickedColIndex);
+            }
+
+            m_Board[pickedRowIndex, pickedColIndex].IsRevealed = true;
+            printBoard();
+        }
+
+        private void pickValidSquareForComputer(out int pickedRowIndex, out int pickedColIndex) // AI at the end
+        {
+            string rowInput, colInput;
+            bool insideBorders;
+            bool invalidChoice = true;
+            Random randPick = new Random();
+
+            do
+            {
+                rowInput = randPick.Next(m_Board.Rows).ToString();
+                colInput = randPick.Next(m_Board.Cols).ToString();
+                colInput = (char.Parse(colInput) + 'A').ToString();
+
+                insideBorders = m_Board.IsInsideBorders(rowInput, colInput, out pickedRowIndex, out pickedColIndex);
+
+                if (insideBorders && m_Board[pickedRowIndex, pickedColIndex].IsRevealed == false)
+                {
+                    invalidChoice = false;
+                }
+
+            } while (invalidChoice);
+
+            Ex02.ConsoleUtils.Screen.Clear();
+            Console.WriteLine("Computer chose {0}{1}.", rowInput, colInput);
+        }
+
+
+        private void pickValidSquareForHuman(out int pickedRowIndex, out int pickedColIndex)
+        {
+            string rowInput, colInput;
+            bool insideBorders;
+            bool invalidChoice = true;
+
+            do
+            {
+                Console.WriteLine(@"Please select a hidden slot within the borders of the board.
+Please enter a row number.");
+                rowInput = Console.ReadLine();
+                Console.WriteLine("Please enter the letter that indicates the column");
+                colInput = Console.ReadLine();
+                insideBorders = m_Board.IsInsideBorders(rowInput, colInput, out pickedRowIndex, out pickedColIndex);
+
+                if (!insideBorders)
+                {
+                    Console.WriteLine(@"Invalid choice! Your selection wasn't within the borders of the board.");
+                }
+                else if (m_Board[pickedRowIndex, pickedColIndex].IsRevealed == true)
+                {
+                    Console.WriteLine(@"Invalid choice! You must choose unhidden slot.");
+                }
+                else
+                {
+                    invalidChoice = false;
+                }
+
+            } while (invalidChoice);
+
+            Ex02.ConsoleUtils.Screen.Clear();
+            Console.WriteLine("You chose {0}{1}.", rowInput, colInput);
+        }
+
+        private bool isThereAWinner()
+        {
+
+            return false;
+        }
+    }
+}

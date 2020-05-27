@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MemoryGame
 {
-    class Player
+    public class Player
     {
         private string m_UserName;
         private bool m_IsComputer;

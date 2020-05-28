@@ -1,0 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MemoryGame
+{
+    public class Player
+    {
+        private string m_UserName;
+        private bool m_IsComputer;
+        private int m_Points;
+
+
+        public Player(string i_UserName, bool i_IsComputer)
+        {
+            m_UserName = i_UserName;
+            m_IsComputer = i_IsComputer;
+            m_Points = 0;
+        }
+
+        public string UserName
+        {
+            get
+            {
+                return m_UserName;
+            }
+            set
+            {
+                m_UserName = value;
+            }
+        }
+
+        public bool IsComputer
+        {
+            get
+            {
+                return m_IsComputer;
+            }
+            set
+            {
+                m_IsComputer = value;
+            }
+        }
+
+        public int Points
+        {
+            get
+            {
+                return m_Points;
+            }
+            set
+            {
+                m_Points = value;
+            }
+        }
+    }
+}

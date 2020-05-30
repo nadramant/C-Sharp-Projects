@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MemoryGame
+{
+    public class Cell
+    {
+        private int m_Key;
+        private bool m_IsRevealed = false;
+        private bool m_IsSetted = false;
+
+        public bool IsCellSetted
+        {
+            get
+            {
+                return m_IsSetted;
+            }
+
+            set
+            {
+                m_IsSetted = value;
+            }
+        }
+
+        public bool IsRevealed
+        {
+            get
+            {
+                return m_IsRevealed;
+            }
+
+            set
+            {
+                m_IsRevealed = value;
+            }
+        }
+
+        public int Key
+        {
+            get
+            {
+                return m_Key;
+            }
+
+            set
+            {
+                m_Key = value;
+            }
+        }
+    }
+}

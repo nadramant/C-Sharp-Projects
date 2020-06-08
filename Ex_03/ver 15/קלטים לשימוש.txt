@@ -1,0 +1,68 @@
+
+
+1
+1
+12345678
+Hyundai i35
+Yael Tzmigim
+25
+5
+red
+25
+Yael
+0523782372
+1
+2
+87654321
+Skoda Octabia
+Aviv Musah
+21
+4
+red
+1.3
+Aviv
+0523560473
+1
+3
+13572468
+Greatest Motorcycles
+MONSTER
+27
+AA
+100
+5
+Aviv
+0523560473
+1
+4
+34567890
+DBM
+DBM
+30
+A1
+50
+0.3
+Dima
+0583920323
+1
+5
+09876543
+Scania
+Kfar Kasem
+23
+1
+500
+50
+Avi
+052378393
+1
+3
+92837465
+Mercedes
+Mercedes
+23
+B
+79
+3
+Mor
+0522342433
